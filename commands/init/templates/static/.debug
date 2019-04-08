@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExtensionList>
+    <Extension Id="<%= data.bundleId %>.panel">
+        <HostList>
+            <Host Name="AEFT" Port="6586" />
+        </HostList>
+    </Extension>
+</ExtensionList>

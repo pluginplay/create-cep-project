@@ -1,0 +1,65 @@
+{
+  "name": "ae-plugin",
+  "version": "0.0.1",
+  "description": "An After Effects plugin.",
+  "extendScriptClass": "AEPlugin",
+  "manifest": {
+    "bundleName": "AE Plugin",
+    "bundleId": "app.pluginplay.ae-plugin",
+    "hosts": {
+      "AEFT": "13.0"
+    },
+    "requiredRuntimes": {
+      "CSXS": "5.0"
+    },
+    "extensions": {
+      "panel": {
+        "title": "AE Plugin",
+        "size": [
+          300,
+          300
+        ],
+        "minSize": [
+          210,
+          200
+        ]
+      }
+    }
+  },
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "neutrino build",
+    "start": "neutrino start",
+    "lint": "neutrino lint",
+    "test": "neutrino test",
+    "release": "standard-version -r",
+    "deploy-local": "cep-scripts deploy-local",
+    "package": "cep-scripts package",
+    "publish-release": "cep-scripts release"
+  },
+  "devDependencies": {
+    "@neutrinojs/jest": "^8.3.0",
+    "@neutrinojs/standardjs": "^8.3.0",
+    "@pluginplay/cep-scripts": "^0.0.1",
+    "cep-lib": "^0.0.6",
+    "chai": "^4.2.0",
+    "chai-jest-diff": "^1.0.2",
+    "dirty-chai": "^2.0.1",
+    "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
+    "jest-styled-components": "^6.3.1",
+    "mobx": "^4.4.0",
+    "mobx-react": "^5.2.6",
+    "neutrino": "^8.3.0",
+    "neutrino-preset-cep": "^0.0.17",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-cep": "^0.0.10",
+    "react-dom": "^16.6.3",
+    "react-hot-loader": "^4.3.12",
+    "standard-version": "^4.4.0",
+    "styled-components": "^3.3.3",
+    "styled-flex-component": "^2.2.3"
+  }
+}

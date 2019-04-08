@@ -1,0 +1,50 @@
+{
+  "name": "@pluginplay/create-cep-project",
+  "version": "0.0.1",
+  "description": "Generator for creating a new CEP project.",
+  "repository": "git@github.com:pluginplay/create-cep-project.git",
+  "author": "Sam Marks <sam@pluginplay.app>",
+  "license": "MIT",
+  "bin": {
+    "create-cep-project": "./bin/create-cep-project.js"
+  },
+  "scripts": {
+    "start": "./bin/create-cep-project.js init",
+    "release": "standard-version"
+  },
+  "files": [
+    "bin",
+    "commands"
+  ],
+  "keywords": [
+    "cep",
+    "create",
+    "project",
+    "plugin",
+    "adobe"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": "^8.10 || >=10",
+    "npm": ">=5.4.0",
+    "yarn": ">=1.2.1"
+  },
+  "private": false,
+  "dependencies": {
+    "@neutrinojs/create-project": "^8.3.0",
+    "@pluginplay/cep-scripts": "^0.0.1",
+    "case": "^1.6.1",
+    "chalk": "^2.4.2",
+    "deepmerge": "^3.2.0",
+    "ejs": "^2.6.1",
+    "fs-extra": "^7.0.1",
+    "yargs": "^13.2.2",
+    "yeoman-environment": "^2.3.4",
+    "yeoman-generator": "^3.2.0"
+  },
+  "devDependencies": {
+    "standard-version": "^5.0.2"
+  }
+}
