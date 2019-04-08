@@ -1,27 +1,58 @@
-const { ensureDirSync, pathExistsSync, readJsonSync, writeJsonSync } = require('fs-extra')
+const { ensureDirSync, pathExistsSync, readJsonSync, removeSync, writeJsonSync } = require('fs-extra')
 const { basename, join, relative } = require('path')
 const { cyan, green, white, yellow } = require('chalk')
-const NeutrinoGenerator = require('@neutrinojs/create-project/commands/init')
-const { packageManager } = require('@neutrinojs/create-project/commands/init/utils')
+const Generator = require('yeoman-generator')
 const { appendFileSync } = require('fs')
 const { questions } = require('./constants')
+const { packageManager } = require('./utils')
 const packageJsonTemplate = require('./package.json')
 const merge = require('deepmerge')
 const Case = require('case')
 const cepScriptsConfig = require('@pluginplay/cep-scripts/cep-scripts.json')
 
-module.exports = class Project extends NeutrinoGenerator {
+module.exports = class Project extends Generator {
+  _spawnSync(cmd) {
+    const [command, ...args] = cmd.split(' ')
+    const { directory, stdio, debug } = this.options
+    const result = this.spawnCommandSync(command, args, {
+      cwd: directory,
+      stdio,
+      env: process.env,
+    })
+
+    if (result.error || result.status !== 0) {
+      if (result.error) {
+        // The child process failed to start entirely, or timed out.
+        this.log.error(result.error)
+      }
+
+      this.log.error(`The command "${cmd}" exited unsuccessfully.`)
+
+      if (!debug) {
+        this.log.error('Cleaning up the incomplete project directory.')
+        removeSync(directory);
+        this.log.error(
+          'Try again with the --debug flag for more information and to skip cleanup.',
+        )
+      }
+
+      process.exit(result.status || 1)
+    }
+
+    return result
+  }
+
   async prompting () {
     const done = this.async()
 
     this.log(white.bold('Welcome to the Plugin Play CEP Generator! 👋'))
     this.log(cyan('To help you create your new plugin, I am going to ask you a few questions.\n'))
 
-    const answers = await this.prompt(questions(this.appname))
+    const answers = await this.prompt(questions(this.options.name))
     const packageJson = merge(packageJsonTemplate, {
-      name: this.appname,
+      name: this.options.name,
       description: answers.description,
-      extendScriptClass: Case.pascal(this.appname),
+      extendScriptClass: Case.pascal(this.options.name),
       manifest: {
         bundleName: answers.bundleName,
         bundleId: answers.bundleId,
@@ -33,9 +64,9 @@ module.exports = class Project extends NeutrinoGenerator {
       }
     })
     const cepScriptsJson = merge(cepScriptsConfig, {
-      packageName: `${this.appname}-[version].zxp`,
-      packageZipName: `${this.appname}-[version].zip`,
-      certificateName: this.appname
+      packageName: `${this.options.name}-[version].zxp`,
+      packageZipName: `${this.options.name}-[version].zip`,
+      certificateName: this.options.name
     })
 
     this.data = {
@@ -93,7 +124,7 @@ module.exports = class Project extends NeutrinoGenerator {
     )
     appendFileSync(
       join(directory, '.gitignore'),
-      `\n#Plugin Play CEP\nsigning/certificate/*\ncep-scripts.json\n${this.appname}*.zxp\n${this.appname}*.zip\nbuild\naescripts`
+      `\n#Plugin Play CEP\nsigning/certificate/*\ncep-scripts.json\n${name}*.zxp\n${name}*.zip\nbuild\naescripts`
     )
 
     this.fs.copyTpl(
@@ -172,6 +203,7 @@ module.exports = class Project extends NeutrinoGenerator {
 
     this.log('\nNow change your directory to the following to get started:')
     this.log(`  ${cyan('cd')} ${cyan(relative(process.cwd(), directory))}`)
+    this.log(yellow.bold('\nMake sure to update cep-scripts.json before deploying locally or packaging!\n'))
     this.log(`\n❤️  ${white.bold('Plugin Play & Neutrino')}`)
   }
 }

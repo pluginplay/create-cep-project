@@ -15,6 +15,7 @@ export default class App extends Component {
 
   componentDidCatch (error, errorInfo) {
     // This should rarely happen, but represents a critical failure of the application.
+    console.error(error)
   }
 
   render () {
