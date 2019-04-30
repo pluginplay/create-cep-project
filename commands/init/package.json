@@ -57,7 +57,7 @@
     "react@^16",
     "react-cep",
     "react-dom@^16",
-    "react-hot-loader@^4",
+    "react-hot-loader@^3",
     "standard-version@^4",
     "styled-components@^3",
     "styled-flex-component@^2"
