@@ -1,6 +1,6 @@
 {
   "name": "@pluginplay/create-cep-project",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Generator for creating a new CEP project.",
   "repository": "git@github.com:pluginplay/create-cep-project.git",
   "author": "Sam Marks <sam@pluginplay.app>",
